@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new product</title>
+</head>
+<body>
+
+<h2>Dodaj nowy produkt</h2>
+
+<!-- Użyj Thymeleaf do przesłania danych jako obiektu JSON -->
+<form action="#" th:object="${product}" th:action="@{/products/save}" method="post">
+  <!-- Pola formularza do wprowadzania danych nowego produktu -->
+    <input type="hidden" th:field="*{id}">
+  <label>Nazwa:</label>
+  <input type="text"  th:field="*{name}">
+
+  <label>Cena:</label>
+  <input type="text" th:field="*{price}">
+
+  <label>Ilość w magazynie:</label>
+  <input type="text" th:field="*{stockQuantity}">
+
+  <button type="submit">Dodaj produkt</button>
+</form>
+
+</body>
+</html>

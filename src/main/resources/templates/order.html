@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your order</title>
+</head>
+<body>
+
+<h2>Informacje o aktualnym zamówieniu</h2>
+
+
+<div th:if="${order != null}">
+    <p>Numer zamówienia: <span th:text="${order.id}"></span></p>
+    <p>Data zamówienia: <span th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm:ss')}"></span></p>
+
+    <table >
+        <thead>
+        <tr>
+            <th>Nazwa produktu</th>
+            <th>Ilość</th>
+            <th>Cena jednostkowa</th>
+            <th>Łączna cena</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detail : ${order.orderDetails}">
+            <td th:text="${detail.product.name}"></td>
+            <td >
+                <a th:if="${detail.quantity} > 1" th:href="@{/order/add(productId=${detail.getProduct().id},quantity=${detail.quantity}-1)}">-</a>
+                <span th:text="${detail.quantity}"></span>
+                <a th:if="${detail.getProduct().stockQuantity}-1 > ${detail.quantity}" th:href="@{/order/add(productId=${detail.getProduct().id},quantity=${detail.quantity}+1)}">+</a>
+            </td>
+            <td th:text="${detail.price}"></td>
+            <td th:text="${detail.quantity * detail.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <p>Łączna cena za wszystkie produkty: <span th:text="${totalPrice}"></span></p>
+</div>
+
+<!-- Jeżeli aktualne zamówienie jest null -->
+<div th:if="${order == null}">
+    <p>Brak dostępnych informacji o aktualnym zamówieniu.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Products</title>
+</head>
+<body>
+
+<div th:if="${user != null}">
+  <p>Witaj, <span th:text="${user}"></span>!</p>
+</div>
+<div th:if="${user == null}">
+  <p>Nie jesteś zalogowany. Kliknij <a th:href="@{/user}">tutaj</a>, aby się zalogować.</p>
+</div>
+<a th:href="@{/products/add}">Dodaj nowy produkt</a>
+<h1>Lista Produktów</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th>Cena</th>
+    <th>Usuń</th>
+    <th th:if="${user != null}">Dodaj do koszyka</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.name}"></td>
+    <td th:text="${product.price}"></td>
+    <td>
+      <a th:href="@{/products/delete(id=${product.id})}">-</a>
+    </td>
+    <td th:if="${user != null}">
+      <a th:href="@{/order/add(productId=${product.id},quantity=1)}">+</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div th:if="${hasPrevious}">
+  <a th:href="@{/products(page=${page}-1)}" class="btn btn-primary btn-sm mb-3">Previous page</a>
+</div>
+<div th:if="${hasNext}">
+  <a th:href="@{/products(page=${page}+1)}" class="btn btn-primary btn-sm mb-3">Next page</a>
+</div>
+</body>
+</html>
